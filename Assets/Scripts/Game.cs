@@ -7,59 +7,33 @@ using UnityEngine.UI;
 
 public class Game : MonoBehaviour
 {
-	public GameObject click01;
-	public GameObject click02;
-	public GameObject click03;
-	public GameObject click04;
-
-	public TMP_Text t;
-
-
-	// Start is called before the first frame update
-	void SetButtonActive(GameObject button, int pointsToActivate)
-	{
-		if (GameManager.score > pointsToActivate)
-		{
-			button.SetActive(true);
-		}
-		else
-		{
-			button.SetActive(false);
-		}
-	}
+	public TMP_Text goldAmmountText;
+	public List<PlayerButton> playerButtons = new List<PlayerButton>();
 
 	void Update()
 	{
-		t.text = "Gold:" + GameManager.score;
+		goldAmmountText.text = "Gold:" + GameManager.score;
 
-		SetButtonActive(click01, 10);
-		SetButtonActive(click02, 50);
-		SetButtonActive(click03, 100);
-		SetButtonActive(click04, 200);
+		for (int i = 0; i < playerButtons.Count; i++)
+		{
+			SetButtonActive(playerButtons[i], playerButtons[i].pointsNeededToActivate);
+		}
 	}
 
-	public void Click01()
+	void SetButtonActive(PlayerButton button, int pointsNeededToActivate)
 	{
-		GameManager.score += 1;
-	}
+		if (GameManager.score >= pointsNeededToActivate)
+		{
+			button.gameObject.SetActive(true);
+		}
+        else
+        {
+            button.gameObject.SetActive(false);
+        }
+    }
 
-	public void Click02()
-	{
-		GameManager.score += 2;
-	}
-
-	public void Click03()
-	{
-		GameManager.score += 5;
-	}
-
-	public void Click04()
-	{
-		GameManager.score += 10;
-	}
-
-	public void Click05()
-	{
-		GameManager.score += 50;
-	}
+    public void OnClick(int points)
+    {
+        GameManager.score += points;
+    }
 }
